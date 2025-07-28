@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>UPI Dashboard</title>
+  <link rel="stylesheet" href="css/style.css">
+  <meta name="csrf-token" content="mock-csrf-token">
+</head>
+<body>
+  <div class="dashboard">
+    <h2>Welcome to Your UPI Dashboard</h2>
+    <p>Your UPI ID: <span id="upi_id">Loading...</span></p>
+    <p>Balance: ₹<span id="balance">0.00</span></p>
+
+    <h3>Send Money</h3>
+    <form id="transfer-form" method="POST" action="../backend/transfer.php">
+      <select name="method" required>
+        <option value="">Select Method</option>
+        <option value="upi">UPI ID</option>
+        <option value="phone">Phone Number</option>
+        <option value="bank">Bank Transfer</option>
+      </select>
+      <input type="text" name="receiver" placeholder="Receiver UPI ID/Phone/Bank Account" required>
+      <div id="receiver-name"></div>
+      <input type="number" name="amount" placeholder="Amount" min="1" step="0.01" required>
+      <div id="balance-info"></div>
+      <input type="hidden" name="csrf_token" value="mock-csrf-token">
+      <button type="submit">Send</button>
+    </form>
+
+    <h3>Receive via QR</h3>
+    <form id="qr-form" method="POST" action="../backend/qr_generate.php">
+      <input type="text" name="upi_id" id="qr_upi_id" placeholder="Your UPI ID" required>
+      <input type="number" name="amount" placeholder="Amount" min="1" step="0.01" required>
+      <input type="hidden" name="csrf_token" value="mock-csrf-token">
+      <button type="submit">Generate QR</button>
+    </form>
+    <div id="qr-code"></div>
+
+    <h3>Transaction History</h3>
+    <div id="transactions"></div>
+
+    <a href="../backend/logout.php">Logout</a>
+  </div>
+  <script src="main.js"></script>
+  <script>
+    // Load UPI ID dynamically
+    fetch('../backend/get_balance.php', {
+      headers: { 'X-CSRF-Token': getCsrfToken() }
+    })
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('upi_id').innerText = data.upi_id || 'Unknown';
+      })
+      .catch(err => {
+        document.getElementById('upi_id').innerText = 'Error';
+      });
+  </script>
+</body>
+</html>

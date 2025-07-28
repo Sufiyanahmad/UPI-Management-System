@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Register for UPI</title>
+  <link rel="stylesheet" href="css/style.css">
+  <meta name="csrf-token" content="mock-csrf-token">
+</head>
+<body>
+  <div class="dashboard">
+    <h2>Register for UPI</h2>
+    <form id="register-form" method="POST" action="../backend/register.php">
+      <input type="text" name="name" placeholder="Full Name" required>
+      <input type="text" name="phone" placeholder="Phone Number" required pattern="[0-9]{10}">
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="text" name="upi_id" placeholder="UPI ID" required pattern="[a-zA-Z0-9]+@[a-zA-Z]+">
+      <input type="password" name="password" placeholder="Password" required minlength="8">
+      <input type="hidden" name="csrf_token" value="mock-csrf-token">
+      <button type="submit">Register</button>
+    </form>
+    <p>Already have an account? <a href="index.html">Login</a></p>
+  </div>
+  <script>
+    document.getElementById('register-form').addEventListener('submit', function(e) {
+      const phone = document.querySelector('input[name="phone"]').value;
+      const upiId = document.querySelector('input[name="upi_id"]').value;
+      const email = document.querySelector('input[name="email"]').value;
+      if (!/^[0-9]{10}$/.test(phone)) {
+        alert('Phone number must be 10 digits');
+        e.preventDefault();
+      }
+      if (!/^[a-zA-Z0-9]+@[a-zA-Z]+$/.test(upiId)) {
+        alert('Invalid UPI ID format');
+        e.preventDefault();
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        alert('Invalid email format');
+        e.preventDefault();
+      }
+    });
+  </script>
+</body>
+</html>
