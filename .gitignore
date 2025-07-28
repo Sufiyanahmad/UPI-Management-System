@@ -1,0 +1,23 @@
+# PHP
+*.php[co]
+*.phtml
+# Composer
+vendor/
+composer.lock
+# Database
+*.sql.gz
+# Environment files
+.env
+# IDE-specific files
+.vscode/
+.idea/
+*.code-workspace
+# OS-specific files
+.DS_Store
+Thumbs.db
+# Cache and logs
+*.log
+cache/
+# Temporary files
+*.tmp
+*.bak
